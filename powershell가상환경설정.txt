@@ -1,0 +1,14 @@
+# 실행 정책 (한 번만 설정해두면 됨)
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+# 현재 실행 정책 확인
+Get-ExecutionPolicy -List
+
+# 가상환경 활성화
+conda activate MusicDrum
+
+# 가상환경 비활성화
+conda deactivate
+
+# 현재 활성화된 환경 확인
+conda info --envs
