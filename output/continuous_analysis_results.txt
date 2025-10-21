@@ -1,0 +1,18 @@
+드럼 사운드 분석 결과
+==================================================
+
+[1] crash_cymbal
+    시간: 0.00초 - 2.00초
+    지속시간: 2.00초
+    신뢰도: 0.915
+    전체 확률:
+      bass_drum: 0.000
+      crash_cymbal: 0.915
+      high_tom: 0.011
+      hihat_closed: 0.000
+      hihat_open: 0.002
+      low_tom: 0.000
+      mid_tom: 0.000
+      ride_cymbal: 0.002
+      snare_drum: 0.070
+

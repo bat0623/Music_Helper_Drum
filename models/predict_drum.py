@@ -110,7 +110,8 @@ class DrumPredictor:
 def demo_prediction():
     """예측 데모 함수"""
     # 모델 경로 설정
-    MODEL_PATH = r"C:\GitHub\Music Helper Drum\models\final_crnn_drum_model.h5"
+    MODEL_PATH = r"C:\GitHub\Music_Helper_Drum\models\final_crnn_drum_model.h5"
+    TEST_SOUND_DIR = r"C:\GitHub\Music_Helper_Drum\TestSound"
     
     # 예측기 초기화
     try:
@@ -119,20 +120,28 @@ def demo_prediction():
         print("모델 파일이 없습니다. 먼저 crnn_drum_classifier.py를 실행해서 모델을 훈련하세요.")
         return
     
-    # 테스트할 오디오 파일 경로들
-    test_audio_paths = [
-        r"C:\GitHub\Music Helper Drum\drum_samples\bass_drum\bass drum.wav",
-        r"C:\GitHub\Music Helper Drum\drum_samples\snare_drum\ASR-X Snare 02.wav",
-        r"C:\GitHub\Music Helper Drum\drum_samples\hihat_closed\Closed Hihat1.wav"
-    ]
+    # TestSound 폴더의 모든 오디오 파일 찾기
+    audio_extensions = ['.wav', '.mp3', '.flac', '.ogg', '.aif', '.aiff']
+    test_audio_paths = []
+    
+    if os.path.exists(TEST_SOUND_DIR):
+        for file in os.listdir(TEST_SOUND_DIR):
+            if any(file.lower().endswith(ext) for ext in audio_extensions):
+                test_audio_paths.append(os.path.join(TEST_SOUND_DIR, file))
+    
+    if not test_audio_paths:
+        print(f"TestSound 폴더에서 오디오 파일을 찾을 수 없습니다: {TEST_SOUND_DIR}")
+        return
     
     print("="*60)
     print("드럼 사운드 예측 데모")
     print("="*60)
+    print(f"\n총 {len(test_audio_paths)}개의 오디오 파일 발견")
+    print("-" * 60)
     
-    for audio_path in test_audio_paths:
+    for idx, audio_path in enumerate(test_audio_paths, 1):
         if os.path.exists(audio_path):
-            print(f"\n파일: {os.path.basename(audio_path)}")
+            print(f"\n[{idx}/{len(test_audio_paths)}] 파일: {os.path.basename(audio_path)}")
             print("-" * 40)
             
             results = predictor.predict(audio_path, top_k=3)
@@ -144,10 +153,14 @@ def demo_prediction():
                 print("예측 실패")
         else:
             print(f"파일을 찾을 수 없습니다: {audio_path}")
+    
+    print("\n" + "="*60)
+    print(f"전체 예측 완료! 총 {len(test_audio_paths)}개 파일 처리됨")
+    print("="*60)
 
 def interactive_prediction():
     """대화형 예측 함수"""
-    MODEL_PATH = r"C:\GitHub\Music Helper Drum\models\final_crnn_drum_model.h5"
+    MODEL_PATH = r"C:\GitHub\Music_Helper_Drum\models\final_crnn_drum_model.h5"
     
     try:
         predictor = DrumPredictor(MODEL_PATH)

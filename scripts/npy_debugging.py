@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 # =====================================================================
 
 # 파일 경로 설정
-DATA_PATH = r"C:\GitHub\Music Helper Drum\data_augmented"
+DATA_PATH = r"C:\GitHub\Music_Helper_Drum\data_augmented"
 
 # 라벨-숫자 변환 규칙 정의 (test.py와 동일해야 함)
 labels = ['bass_drum', 'crash_cymbal', 'high_tom', 'hihat_closed', 

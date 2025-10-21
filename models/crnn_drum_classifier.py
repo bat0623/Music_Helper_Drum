@@ -275,8 +275,8 @@ class ModelEvaluator:
 
 def main():
     # 경로 설정
-    DATA_PATH = r"C:\GitHub\Music Helper Drum\data_augmented"
-    MODEL_SAVE_PATH = r"C:\GitHub\Music Helper Drum\models"
+    DATA_PATH = r"C:\GitHub\Music_Helper_Drum\data_augmented"
+    MODEL_SAVE_PATH = r"C:\GitHub\Music_Helper_Drum\models"
     
     print("="*60)
     print("CRNN 드럼 분류 모델 훈련 시작")
@@ -295,7 +295,7 @@ def main():
     
     # 3. 모델 훈련
     trainer = ModelTrainer(model, MODEL_SAVE_PATH)
-    history = trainer.train(X_train, y_train, X_val, y_val, epochs=10, batch_size=32)
+    history = trainer.train(X_train, y_train, X_val, y_val, epochs=100, batch_size=32)
     trainer.plot_training_history()
     
     # 4. 모델 평가

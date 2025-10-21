@@ -7,9 +7,9 @@ from tqdm import tqdm
 # ▼▼▼ 1. 기본 경로 및 파라미터 설정 ▼▼▼
 # =====================================================================
 # 원본 데이터가 있는 경로
-DATA_PATH = r"C:\GitHub\Music Helper Drum\drum_samples"
+DATA_PATH = r"C:\GitHub\Music_Helper_Drum\drum_samples"
 # 증강된 데이터를 저장할 새로운 경로
-SAVE_PATH = r"C:\GitHub\Music Helper Drum\data_augmented"
+SAVE_PATH = r"C:\GitHub\Music_Helper_Drum\data_augmented"
 
 # 오디오 처리에 사용할 설정값
 CONFIG = {
