@@ -274,9 +274,13 @@ class ModelEvaluator:
 # =====================================================================
 
 def main():
+    # 프로젝트 루트 경로 자동 감지
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(script_dir)
+    
     # 경로 설정
-    DATA_PATH = r"C:\GitHub\Music_Helper_Drum\data_augmented"
-    MODEL_SAVE_PATH = r"C:\GitHub\Music_Helper_Drum\models"
+    DATA_PATH = os.path.join(project_root, "data_augmented")
+    MODEL_SAVE_PATH = script_dir  # models 폴더
     
     print("="*60)
     print("CRNN 드럼 분류 모델 훈련 시작")

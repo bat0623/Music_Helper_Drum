@@ -1,18 +1,28 @@
 import sys
 import os
+import importlib.util
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'models'))
 
-from drum_score_analyzer import DrumScoreAnalyzer
+# 숫자로 시작하는 모듈 import를 위한 특수 처리
+spec = importlib.util.spec_from_file_location("score_analyzer", 
+    os.path.join(os.path.dirname(__file__), '..', 'models', '4_score_analyzer.py'))
+score_analyzer = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(score_analyzer)
+DrumScoreAnalyzer = score_analyzer.DrumScoreAnalyzer
 
 def main():
     print("="*60)
     print("드럼 악보 분석 테스트")
     print("="*60)
     
+    # 프로젝트 루트 경로 자동 감지
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(script_dir)
+    
     # 모델 경로
-    MODEL_PATH = r"C:\GitHub\Music_Helper_Drum\models\final_crnn_drum_model.h5"
-    TEST_SOUND_DIR = r"C:\GitHub\Music_Helper_Drum\TestSound"
-    OUTPUT_DIR = r"C:\GitHub\Music_Helper_Drum\output"
+    MODEL_PATH = os.path.join(project_root, "models", "final_crnn_drum_model.h5")
+    TEST_SOUND_DIR = os.path.join(project_root, "TestSound")
+    OUTPUT_DIR = os.path.join(project_root, "output")
     
     # 분석기 초기화
     try:

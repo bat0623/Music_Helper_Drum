@@ -6,10 +6,14 @@ from tqdm import tqdm
 # =====================================================================
 # ▼▼▼ 1. 기본 경로 및 파라미터 설정 ▼▼▼
 # =====================================================================
+# 프로젝트 루트 경로 자동 감지
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
+
 # 원본 데이터가 있는 경로
-DATA_PATH = r"C:\GitHub\Music_Helper_Drum\drum_samples"
+DATA_PATH = os.path.join(PROJECT_ROOT, "drum_samples")
 # 증강된 데이터를 저장할 새로운 경로
-SAVE_PATH = r"C:\GitHub\Music_Helper_Drum\data_augmented"
+SAVE_PATH = os.path.join(PROJECT_ROOT, "data_augmented")
 
 # 오디오 처리에 사용할 설정값
 CONFIG = {

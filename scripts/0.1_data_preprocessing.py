@@ -4,13 +4,16 @@ import numpy as np
 from tqdm import tqdm
 
 # =====================================================================
-# ▼▼▼ 1. 윈도우 파일 경로 설정 ▼▼▼
+# ▼▼▼ 1. 파일 경로 설정 ▼▼▼
 # =====================================================================
-# 윈도우에서는 파일 경로를 '\' 문자로 구분합니다.
-# 하지만 파이썬에서는 '\'를 특별한 기능(예: '\n'은 줄바꿈)을 가진 '이스케이프 문자'로 인식합니다.
-# 따라서 경로 앞에 r을 붙여서(Raw String), '\'를 순수한 문자로 취급하도록 만들어야 합니다.
-DATA_PATH = r"C:\GitHub\Music Helper Drum\drum_samples"
-SAVE_PATH = r"C:\GitHub\Music Helper Drum\data"
+# 프로젝트 루트 경로 자동 감지
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
+
+# 원본 데이터가 있는 경로
+DATA_PATH = os.path.join(PROJECT_ROOT, "drum_samples")
+# 전처리된 데이터를 저장할 경로
+SAVE_PATH = os.path.join(PROJECT_ROOT, "data")
 
 # 전처리에 사용할 파라미터 정의
 CONFIG = {

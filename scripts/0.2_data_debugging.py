@@ -6,8 +6,12 @@ import matplotlib.pyplot as plt
 # ▼▼▼ 1단계: .npy 파일 불러오기 및 기본 정보 확인 ▼▼▼
 # =====================================================================
 
+# 프로젝트 루트 경로 자동 감지
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
+
 # 파일 경로 설정
-DATA_PATH = r"C:\GitHub\Music_Helper_Drum\data_augmented"
+DATA_PATH = os.path.join(PROJECT_ROOT, "data_augmented")
 
 # 라벨-숫자 변환 규칙 정의 (test.py와 동일해야 함)
 labels = ['bass_drum', 'crash_cymbal', 'high_tom', 'hihat_closed', 

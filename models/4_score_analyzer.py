@@ -443,9 +443,13 @@ def demo_score_analysis():
     print("드럼 악보 분석 시스템 데모")
     print("="*60)
     
-    MODEL_PATH = r"C:\GitHub\Music_Helper_Drum\models\final_crnn_drum_model.h5"
-    TEST_SOUND_DIR = r"C:\GitHub\Music_Helper_Drum\TestSound"
-    OUTPUT_DIR = r"C:\GitHub\Music_Helper_Drum\output"
+    # 프로젝트 루트 경로 자동 감지
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(script_dir)
+    
+    MODEL_PATH = os.path.join(script_dir, "final_crnn_drum_model.h5")
+    TEST_SOUND_DIR = os.path.join(project_root, "TestSound")
+    OUTPUT_DIR = os.path.join(project_root, "output")
     
     try:
         analyzer = DrumScoreAnalyzer(MODEL_PATH)

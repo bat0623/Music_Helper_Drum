@@ -109,9 +109,13 @@ class DrumPredictor:
 
 def demo_prediction():
     """예측 데모 함수"""
+    # 프로젝트 루트 경로 자동 감지
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(script_dir)
+    
     # 모델 경로 설정
-    MODEL_PATH = r"C:\GitHub\Music_Helper_Drum\models\final_crnn_drum_model.h5"
-    TEST_SOUND_DIR = r"C:\GitHub\Music_Helper_Drum\TestSound"
+    MODEL_PATH = os.path.join(script_dir, "final_crnn_drum_model.h5")
+    TEST_SOUND_DIR = os.path.join(project_root, "TestSound")
     
     # 예측기 초기화
     try:
@@ -160,7 +164,10 @@ def demo_prediction():
 
 def interactive_prediction():
     """대화형 예측 함수"""
-    MODEL_PATH = r"C:\GitHub\Music_Helper_Drum\models\final_crnn_drum_model.h5"
+    # 프로젝트 루트 경로 자동 감지
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    
+    MODEL_PATH = os.path.join(script_dir, "final_crnn_drum_model.h5")
     
     try:
         predictor = DrumPredictor(MODEL_PATH)
