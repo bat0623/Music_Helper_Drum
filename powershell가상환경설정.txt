@@ -1,5 +1,6 @@
 # 실행 정책 (한 번만 설정해두면 됨)
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+conda init powershell
 
 # 현재 실행 정책 확인
 Get-ExecutionPolicy -List
