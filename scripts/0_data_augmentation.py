@@ -34,19 +34,45 @@ TARGET_CLASSES = ['bass_drum', 'crash_cymbal', 'high_tom', 'hihat_closed',
 # 위 클래스에 속한 원본 파일 1개당 생성할 증강 데이터 개수
 AUGMENTATIONS_PER_FILE = 100
 
-# 시간 축 이동을 최대 몇 초 내에서 적용할지 설정
-TIME_SHIFT_SECONDS = 0.2
+# 증강 기법별 파라미터 설정
+AUGMENTATION_PARAMS = {
+    "time_shift_seconds": 0.2,      # 시간 축 이동 범위 (초)
+    "noise_factor": 0.005,           # 잡음 강도
+    "pitch_shift_steps": 2,          # 음높이 변경 범위 (-2 ~ +2 반음)
+    "time_stretch_rate": 0.1,        # 속도 변경 범위 (0.9 ~ 1.1배)
+    "volume_change_db": 3            # 볼륨 변경 범위 (-3 ~ +3 dB)
+}
 
 # =====================================================================
-# ▼▼▼ 3. 시간 축 이동 증강 함수 정의 ▼▼▼
+# ▼▼▼ 3. 증강 함수 정의 ▼▼▼
 # =====================================================================
+
 def time_shift(audio, sr, shift_max_seconds):
-    """오디오 데이터의 시간 축을 0 ~ shift_max_seconds 사이에서 랜덤하게 이동시킵니다."""
+    """오디오 데이터의 시간 축을 랜덤하게 이동시킵니다."""
     shift_limit = int(sr * shift_max_seconds)
-    # 0부터 shift_limit-1 사이의 정수를 랜덤하게 선택
     shift_amount = int(np.random.rand() * shift_limit)
     shifted_audio = np.roll(audio, shift_amount)
     return shifted_audio
+
+def add_noise(audio, noise_factor):
+    """오디오에 랜덤 노이즈를 추가합니다."""
+    noise = np.random.randn(len(audio))
+    augmented_audio = audio + noise_factor * noise
+    # 클리핑 방지 (-1.0 ~ 1.0 범위)
+    augmented_audio = np.clip(augmented_audio, -1.0, 1.0)
+    return augmented_audio
+
+def pitch_shift(audio, sr, n_steps):
+    """음높이를 반음 단위로 변경합니다."""
+    return librosa.effects.pitch_shift(audio, sr=sr, n_steps=n_steps)
+
+def time_stretch(audio, rate):
+    """오디오의 속도를 변경합니다 (음높이는 유지)."""
+    return librosa.effects.time_stretch(audio, rate=rate)
+
+def change_volume(audio, db_change):
+    """볼륨을 dB 단위로 변경합니다."""
+    return audio * (10 ** (db_change / 20.0))
 
 # =====================================================================
 # ▼▼▼ 4. 데이터 전처리 및 증강 실행 ▼▼▼
@@ -97,7 +123,30 @@ for label in labels:
             # 타겟 클래스인 경우에만 증강 실행
             if is_target_class:
                 for _ in range(AUGMENTATIONS_PER_FILE):
-                    augmented_y = time_shift(y, sr, TIME_SHIFT_SECONDS)
+                    augmented_y = y.copy()
+                    
+                    # 랜덤하게 1~3개의 증강 기법을 조합하여 적용
+                    num_augmentations = np.random.randint(1, 4)  # 1, 2, 또는 3개 선택
+                    augmentation_choices = np.random.choice(5, size=num_augmentations, replace=False)
+                    
+                    for aug_choice in augmentation_choices:
+                        if aug_choice == 0:  # Time Shift
+                            augmented_y = time_shift(augmented_y, sr, AUGMENTATION_PARAMS["time_shift_seconds"])
+                        elif aug_choice == 1:  # Add Noise
+                            augmented_y = add_noise(augmented_y, AUGMENTATION_PARAMS["noise_factor"])
+                        elif aug_choice == 2:  # Pitch Shift
+                            n_steps = np.random.uniform(-AUGMENTATION_PARAMS["pitch_shift_steps"], 
+                                                       AUGMENTATION_PARAMS["pitch_shift_steps"])
+                            augmented_y = pitch_shift(augmented_y, sr, n_steps)
+                        elif aug_choice == 3:  # Time Stretch
+                            rate = np.random.uniform(1.0 - AUGMENTATION_PARAMS["time_stretch_rate"], 
+                                                    1.0 + AUGMENTATION_PARAMS["time_stretch_rate"])
+                            augmented_y = time_stretch(augmented_y, rate)
+                        elif aug_choice == 4:  # Volume Change
+                            db_change = np.random.uniform(-AUGMENTATION_PARAMS["volume_change_db"], 
+                                                         AUGMENTATION_PARAMS["volume_change_db"])
+                            augmented_y = change_volume(augmented_y, db_change)
+                    
                     augmented_feature = process_audio(augmented_y)
                     all_features.append(augmented_feature)
                     all_labels.append(label_to_int[label])
